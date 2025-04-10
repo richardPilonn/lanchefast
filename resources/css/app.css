@@ -1,0 +1,8 @@
+.card-custom-shadow {
+    box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.3) !important;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card-custom-shadow:hover {
+    box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.4) !important;
+}
