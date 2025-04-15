@@ -1,90 +1,85 @@
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-    <div class="col-md-8">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0 text-center">Cadastrar Novo Cliente</h4>
-            </div>
-            
-            <div class="card-body">
-                @if (session()->has('message'))
-                    <div class="alert alert-success">
-                        {{ session('message') }}
-                    </div>
-                @endif
+<div>
 
-                <form wire:submit.prevent="save">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="nome" class="form-label">Nome</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                <input type="text" wire:model="nome" id="nome" class="form-control">
-                            </div>
-                            @error('nome') <span class="text-danger small">{{ $message }}</span> @enderror
-                        </div>
 
-                        <div class="col-md-6">
-                            <label for="cpf" class="form-label">CPF</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
-                                <input type="text" wire:model="cpf" id="cpf" class="form-control">
-                            </div>
-                            @error('cpf') <span class="text-danger small">{{ $message }}</span> @enderror
-                        </div>
-                    </div>
+    <x-layouts.app>
+        <div class="container mt-5">
+            <!-- Título da página com ícone -->
+            <h1 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                <i class="bi bi-plus-circle text-green-600"></i>
+                Criar Cliente
+            </h1>
 
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="email" class="form-label">Email</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input type="email" wire:model="email" id="email" class="form-control">
-                            </div>
-                            @error('email') <span class="text-danger small">{{ $message }}</span> @enderror
-                        </div>
+            <!-- Exibe mensagem de sucesso da sessão, se existir -->
+            @if (session()->has('message'))
+                <div class="alert alert-success">{{ session('message') }}</div>
+            @endif
 
-                        <div class="col-md-6">
-                            <label for="telefone" class="form-label">Telefone</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                                <input type="text" wire:model="telefone" id="telefone" class="form-control">
-                            </div>
-                            @error('telefone') <span class="text-danger small">{{ $message }}</span> @enderror
-                        </div>
-                    </div>
+            <!-- Formulário para criar um novo cliente -->
+            <form wire:submit.prevent="save" class="needs-validation" novalidate>
+                <!-- Campo para o nome do cliente -->
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" id="nome" wire:model.defer="nome"
+                        class="form-control @error('nome') is-invalid @enderror" />
+                    @error('nome')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="endereco" class="form-label">Endereço</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                                <input type="text" wire:model="endereco" id="endereco" class="form-control">
-                            </div>
-                            @error('endereco') <span class="text-danger small">{{ $message }}</span> @enderror
-                        </div>
-                    </div>
+                <!-- Campo para o endereço do cliente -->
+                <div class="mb-3">
+                    <label for="endereco" class="form-label">Endereço</label>
+                    <input type="text" id="endereco" wire:model.defer="endereco"
+                        class="form-control @error('endereco') is-invalid @enderror" />
+                    @error('endereco')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <label for="senha" class="form-label">Senha</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                <input type="password" wire:model="senha" id="senha" class="form-control">
-                            </div>
-                            @error('senha') <span class="text-danger small">{{ $message }}</span> @enderror
-                        </div>
-                    </div>
+                <!-- Campo para o telefone do cliente -->
+                <div class="mb-3">
+                    <label for="telefone" class="form-label">Telefone</label>
+                    <input type="text" id="telefone" wire:model.defer="telefone"
+                        class="form-control @error('telefone') is-invalid @enderror" />
+                    @error('telefone')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
-                    <div class="d-flex justify-content-between mt-4">
-                        <a href="{{ route('clientes.index') }}" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left"></i> Voltar
-                        </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-save"></i> Salvar
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <!-- Campo para o CPF do cliente -->
+                <div class="mb-3">
+                    <label for="cpf" class="form-label">CPF</label>
+                    <input type="text" id="cpf" wire:model.defer="cpf"
+                        class="form-control @error('cpf') is-invalid @enderror" />
+                    @error('cpf')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Campo para o email do cliente -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="email" id="email" wire:model.defer="email"
+                        class="form-control @error('email') is-invalid @enderror" />
+                    @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Campo para a senha do cliente -->
+                <div class="mb-3">
+                    <label for="senha" class="form-label">Senha</label>
+                    <input type="password" id="senha" wire:model.defer="senha"
+                        class="form-control @error('senha') is-invalid @enderror" />
+                    @error('senha')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Botões para salvar ou cancelar -->
+                <button type="submit" class="btn btn-success">Salvar</button>
+                <a href="{{ route('clientes.index') }}" class="btn btn-secondary ms-2">Cancelar</a>
+            </form>
         </div>
-    </div>
+    </x-layouts.app>
 </div>
