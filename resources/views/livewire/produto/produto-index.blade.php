@@ -1,83 +1,74 @@
-<div class="container mt-4">
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <h2>Produtos</h2>
-        </div>
-        <div class="col-md-6 text-end">
-            <a href="{{ route('produtos.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Novo Produto
-            </a>
-        </div>
-    </div>
+<div>
+    <x-layouts.app>
+        <div class="container mt-5">
+            <!-- Título da página com ícone -->
+            <h1 class="text-3xl font-bold mb-6 flex items-center gap-3">
+                <i class="bi bi-box-seam text-green-600"></i>
+                Lista de Produtos
+            </h1>
 
-    <div class="card">
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <input type="text" wire:model.debounce.300ms="search" 
-                    class="form-control" placeholder="Buscar produtos...">
-                </div>
-                <div class="col-md-3">
-                    <select wire:model="perPage" class="form-select">
-                        <option value="10">10 por página</option>
-                        <option value="25">25 por página</option>
-                        <option value="50">50 por página</option>
-                        <option value="100">100 por página</option>
-                    </select>
-                </div>
-            </div>
+            <!-- Campo de busca que atualiza a propriedade 'search' do componente Livewire -->
+            <input type="text" wire:model="search" placeholder="Buscar produtos..." class="form-control mb-4" />
 
-            @if(session()->has('message'))
-                <div class="alert alert-success">
-                    {{ session('message') }}
-                </div>
+            <!-- Exibe mensagem de sucesso da sessão, se existir -->
+            @if (session()->has('message'))
+                <div class="alert alert-success">{{ session('message') }}</div>
             @endif
 
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
+            <!-- Tabela com a listagem dos produtos -->
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-success">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Ingredientes</th>
+                        <th>Valor</th>
+                        <th>Imagem</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop para exibir cada produto -->
+                    @foreach ($produtos as $produto)
                         <tr>
-                            <th>Nome</th>
-                            <th>Ingredientes</th>
-                            <th>Valor</th>
-                            <th>Ações</th>
+                            <td>{{ $produto->nome }}</td>
+                            <td>{{ $produto->ingredientes }}</td>
+                            <td>R$ {{ number_format($produto->valor, 2, ',', '.') }}</td>
+                            <td>
+                                <!-- Exibe a imagem do produto, se existir -->
+                                @if ($produto->imagem)
+                                    <img src="{{ asset('storage/' . $produto->imagem) }}" alt="{{ $produto->nome }}"
+                                        class="img-thumbnail" style="max-width: 60px;" />
+                                @else
+                                    <span class="text-muted fst-italic">Sem imagem</span>
+                                @endif
+                            </td>
+                            <td>
+                                <!-- Botão para ver detalhes do produto -->
+                                <a href="{{ route('produtos.show', $produto->id) }}"
+                                    class="btn btn-sm btn-outline-success" title="Ver">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <!-- Botão para editar o produto -->
+                                <a href="{{ route('produtos.edit', $produto->id) }}"
+                                    class="btn btn-sm btn-outline-primary" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <!-- Botão para deletar o produto, com confirmação -->
+                                <button wire:click="delete({{ $produto->id }})" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Tem certeza?')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($produtos as $produto)
-                            <tr>
-                                <td>{{ $produto->nome }}</td>
-                                <td>{{ $produto->igredientes }}</td>
-                                <td>{{ $produto->valor }}</td>
-                                <td>
-                                    <a href="{{ route('produtos.show', $produto->id) }}" 
-                                        class="btn btn-sm btn-info">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <a href="{{ route('produtos.edit', $produto->id) }}" 
-                                        class="btn btn-sm btn-warning">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <button wire:click="delete({{ $produto->id }})" 
-                                        class="btn btn-sm btn-danger" onclick="return 
-                                        confirm('Tem certeza?')">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center">
-                                    Nenhum produto encontrado.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                    @endforeach
+                </tbody>
+            </table>
 
-            <div class="mt-3">
-                {{ $produtos->links() }}
-            </div>
+            <!-- Links de paginação -->
+            {{ $produtos->links() }}
+
+            <!-- Botão para criar um novo produto -->
+            <a href="{{ route('produtos.create') }}" class="btn btn-success mt-3">Criar Novo Produto</a>
         </div>
-    </div>
+    </x-layouts.app>
 </div>
