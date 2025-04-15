@@ -31,3 +31,15 @@ Route::prefix('funcionarios')->group(function () {
     Route::get('/{funcionario}', FuncionarioShow::class)->name('funcionarios.show');
     Route::get('/{funcionario}/edit', FuncionarioEdit::class)->name('funcionarios.edit');
 });
+
+use App\Livewire\Pedido\PedidoIndex;
+use App\Livewire\Pedido\PedidoCreate;
+use App\Livewire\Pedido\PedidoShow;
+use App\Livewire\Pedido\PedidoEdit;
+
+Route::prefix('pedidos')->group(function () {
+    Route::get('/', PedidoIndex::class)->name('pedidos.index');
+    Route::get('/create', PedidoCreate::class)->name('pedidos.create');
+    Route::get('/{pedido}', PedidoShow::class)->name('pedidos.show');
+    Route::get('/{pedido}/edit', PedidoEdit::class)->name('pedidos.edit');
+});
